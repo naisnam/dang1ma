@@ -335,7 +335,7 @@ class CarrotMan:
                 distances.append(distance)
 
             # Apply acceleration limits in reverse to adjust speeds
-            accel_limit = 1.5  # m/s^2
+            accel_limit = 0.9  # m/s^2
             accel_limit_kmh = accel_limit * 3.6  # Convert to km/h per second
             out_speeds = [0] * len(speeds)
             out_speeds[-1] = speeds[-1]  # Set the last speed as the initial value
