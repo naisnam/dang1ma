@@ -293,9 +293,11 @@ class CarrotMan:
 
   def carrot_navi_route(self):
    
-    if not self.navi_points_active or not SHAPELY_AVAILABLE:
+    if not self.navi_points_active or not SHAPELY_AVAILABLE or self.carrot_serv.active_carrot > 1:
       haversine_cache.clear()
       curvature_cache.clear()
+      self.navi_points = []
+      self.navi_points_active = False
       return [],[],300
 
     current_position = (self.carrot_serv.vpPosPointLon, self.carrot_serv.vpPosPointLat)
