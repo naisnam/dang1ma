@@ -33,9 +33,10 @@ NetworkType = log.DeviceState.NetworkType
 
 ################ CarrotNavi
 ## 국가법령정보센터: 도로설계기준
-V_CURVE_LOOKUP_BP = [0., 1./800., 1./670., 1./560., 1./440., 1./360., 1./265., 1./190., 1./135., 1./85., 1./55., 1./30., 1./15.]
-V_CRUVE_LOOKUP_VALS = [300, 150, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 20]
+#V_CURVE_LOOKUP_BP = [0., 1./800., 1./670., 1./560., 1./440., 1./360., 1./265., 1./190., 1./135., 1./85., 1./55., 1./30., 1./15.]
 #V_CRUVE_LOOKUP_VALS = [300, 150, 120, 110, 100, 90, 80, 70, 60, 50, 45, 35, 30]
+V_CURVE_LOOKUP_BP = [0., 1./800., 1./670., 1./560., 1./440., 1./360., 1./265., 1./190., 1./135., 1./85., 1./55., 1./30., 1./25.]
+V_CRUVE_LOOKUP_VALS = [300, 150, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 5]
 
 # Haversine formula to calculate distance between two GPS coordinates
 haversine_cache = {}
@@ -337,12 +338,12 @@ class CarrotMan:
                 distances.append(distance)
 
             # Apply acceleration limits in reverse to adjust speeds
-            accel_limit = 0.9  # m/s^2
+            accel_limit = 1.5  # m/s^2
             accel_limit_kmh = accel_limit * 3.6  # Convert to km/h per second
             out_speeds = [0] * len(speeds)
             out_speeds[-1] = speeds[-1]  # Set the last speed as the initial value
 
-            time_delay = self.carrot_serv.autoNaviSpeedCtrlEnd
+            time_delay = self.carrot_serv.autoNaviSpeedBumpTime
             time_wait = 0
             for i in range(len(speeds) - 2, -1, -1):
                 target_speed = speeds[i]
@@ -352,10 +353,10 @@ class CarrotMan:
                   time_wait = - time_delay
 
                 # Calculate time interval for the current segment based on speed
-                time_interval = distance_interval / (next_out_speed / 3.6) if target_speed > 0 else 0
+                time_interval = distance_interval / (next_out_speed / 3.6) if next_out_speed > 0 else 0
 
                 time_wait += time_interval
-                time_interval = max(0, time_interval + time_wait)
+                time_interval = min(time_interval, max(0, time_interval + time_wait))
 
                 # Calculate maximum allowed speed with acceleration limit
                 max_allowed_speed = next_out_speed + (accel_limit_kmh * time_interval)
