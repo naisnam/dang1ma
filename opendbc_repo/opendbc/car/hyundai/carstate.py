@@ -573,7 +573,7 @@ class CarState(CarStateBase):
     # 개조, 독립 EV6: 1, 1 => True, inADAS: 1, 0 => False
     # 비개조, 0, 0 => True
     if CP.enableBsm:
-      if CP.flags & HyundaiFlags.CAMERA_SCC.value and CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value:
+      if (CP.flags & HyundaiFlags.CAMERA_SCC.value and CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value) or CP.carFingerprint in [CAR.KIA_SORENTO_4TH_GEN, CAR.KIA_SORENTO_HEV_4TH_GEN]:
         pass
       else:
         messages += [
@@ -620,7 +620,7 @@ class CarState(CarStateBase):
     # 개조, 독립 EV6: 1, 1 => False, inADAS: 1, 0 => True
     # 비개조, 0, 0 => False
     if CP.enableBsm:
-      if CP.flags & HyundaiFlags.CAMERA_SCC.value and CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value:
+      if (CP.flags & HyundaiFlags.CAMERA_SCC.value and CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value) or CP.carFingerprint in [CAR.KIA_SORENTO_4TH_GEN, CAR.KIA_SORENTO_HEV_4TH_GEN]:
         messages += [
           ("BLINDSPOTS_REAR_CORNERS", 20),
         ]
