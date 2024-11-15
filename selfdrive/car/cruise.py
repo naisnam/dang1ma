@@ -616,7 +616,7 @@ class VCruiseCarrot:
     if CS.brakePressed:
       self._cruise_ready = False
       self._brake_pressed_count = max(1, self._brake_pressed_count + 1)
-      if self._brake_pressed_count == 1 and CC.enabled:
+      if self._brake_pressed_count == 1: # and CC.enabled:
         self._v_cruise_kph_at_brake = self.v_cruise_kph
       self._soft_hold_count = self._soft_hold_count + 1 if CS.vEgo < 0.1 and CS.gearShifter == GearShifter.drive else 0
       if self.autoCruiseControl == 0 or self.CP.pcmCruise:
