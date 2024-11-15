@@ -39,11 +39,11 @@ V_CURVE_LOOKUP_BP = [0., 1./800., 1./670., 1./560., 1./440., 1./360., 1./265., 1
 V_CRUVE_LOOKUP_VALS = [300, 150, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 5]
 
 # Haversine formula to calculate distance between two GPS coordinates
-haversine_cache = {}
+#haversine_cache = {}
 def haversine(lon1, lat1, lon2, lat2):
-    key = (lon1, lat1, lon2, lat2)
-    if key in haversine_cache:
-        return haversine_cache[key]
+    #key = (lon1, lat1, lon2, lat2)
+    #if key in haversine_cache:
+    #    return haversine_cache[key]
 
     R = 6371000  # Radius of Earth in meters
     phi1, phi2 = math.radians(lat1), math.radians(lat2)
@@ -53,7 +53,7 @@ def haversine(lon1, lat1, lon2, lat2):
     a = math.sin(dphi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2) ** 2
     distance = 2 * R * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-    haversine_cache[key] = distance
+    #haversine_cache[key] = distance
     return distance
 
 
@@ -295,7 +295,7 @@ class CarrotMan:
   def carrot_navi_route(self):
    
     if not self.navi_points_active or not SHAPELY_AVAILABLE or self.carrot_serv.active_carrot <= 1:
-      haversine_cache.clear()
+      #haversine_cache.clear()
       #curvature_cache.clear()
       self.navi_points = []
       self.navi_points_active = False
