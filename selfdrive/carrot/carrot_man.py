@@ -334,6 +334,8 @@ class CarrotMan:
                 curvature = calculate_curvature(p1, p2, p3)
                 curvatures.append(curvature)
                 speed = interp(abs(curvature), V_CURVE_LOOKUP_BP, V_CRUVE_LOOKUP_VALS)
+                if abs(curvature) < 0.01:
+                  speed = max(speed, self.carrot_serv.nRoadLimitSpeed)
                 speeds.append(speed)
                 distances.append(distance)
 
