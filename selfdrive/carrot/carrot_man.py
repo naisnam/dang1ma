@@ -159,11 +159,11 @@ def gps_to_relative_xy(gps_path, reference_point, heading_deg):
 
 
 # Calculate curvature given three points using a faster vector-based method
-curvature_cache = {}
+#curvature_cache = {}
 def calculate_curvature(p1, p2, p3):
-    key = (p1, p2, p3)
-    if key in curvature_cache:
-        return curvature_cache[key]
+    #key = (p1, p2, p3)
+    #if key in curvature_cache:
+    #    return curvature_cache[key]
 
     v1 = (p2[0] - p1[0], p2[1] - p1[1])
     v2 = (p3[0] - p2[0], p3[1] - p2[1])
@@ -177,7 +177,7 @@ def calculate_curvature(p1, p2, p3):
     else:
         curvature = cross_product / (len_v1 * len_v2 * len_v1)
 
-    curvature_cache[key] = curvature
+    #curvature_cache[key] = curvature
     return curvature
 
 class CarrotMan:
@@ -296,7 +296,7 @@ class CarrotMan:
    
     if not self.navi_points_active or not SHAPELY_AVAILABLE or self.carrot_serv.active_carrot <= 1:
       haversine_cache.clear()
-      curvature_cache.clear()
+      #curvature_cache.clear()
       self.navi_points = []
       self.navi_points_active = False
       return [],[],300
