@@ -361,7 +361,8 @@ class CarrotMan:
                 max_allowed_speed = next_out_speed + (accel_limit_kmh * time_apply)
                 adjusted_speed = min(target_speed, max_allowed_speed)
                 
-                time_wait += time_interval
+                #time_wait += time_interval
+                time_wait += min(2.0, time_interval)
 
                 out_speeds[i] = adjusted_speed
 
