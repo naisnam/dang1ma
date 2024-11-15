@@ -355,12 +355,13 @@ class CarrotMan:
                 # Calculate time interval for the current segment based on speed
                 time_interval = distance_interval / (next_out_speed / 3.6) if next_out_speed > 0 else 0
 
-                time_wait += time_interval
-                time_interval = min(time_interval, max(0, time_interval + time_wait))
+                time_apply = min(time_interval, max(0, time_interval + time_wait))
 
                 # Calculate maximum allowed speed with acceleration limit
-                max_allowed_speed = next_out_speed + (accel_limit_kmh * time_interval)
+                max_allowed_speed = next_out_speed + (accel_limit_kmh * time_apply)
                 adjusted_speed = min(target_speed, max_allowed_speed)
+                
+                time_wait += time_interval
 
                 out_speeds[i] = adjusted_speed
 
