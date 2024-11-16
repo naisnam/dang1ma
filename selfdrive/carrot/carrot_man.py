@@ -325,12 +325,13 @@ class CarrotMan:
         curvatures = []
         distances = []
         distance = 10.0
-        if len(resampled_points) >= 7:
+        sample = 4
+        if len(resampled_points) >= sample * 2 + 1:
             # Calculate curvatures and speeds based on curvature
             speeds = []
-            for i in range(len(resampled_points) - 6):
+            for i in range(len(resampled_points) - sample * 2):
                 distance += distance_interval
-                p1, p2, p3 = resampled_points[i], resampled_points[i + 3], resampled_points[i + 6]
+                p1, p2, p3 = resampled_points[i], resampled_points[i + sample], resampled_points[i + sample * 2]
                 curvature = calculate_curvature(p1, p2, p3)
                 curvatures.append(curvature)
                 speed = interp(abs(curvature), V_CURVE_LOOKUP_BP, V_CRUVE_LOOKUP_VALS)
