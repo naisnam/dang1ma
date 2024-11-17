@@ -345,6 +345,7 @@ class CarrotMan:
             accel_limit_kmh = accel_limit * 3.6  # Convert to km/h per second
             out_speeds = [0] * len(speeds)
             out_speeds[-1] = speeds[-1]  # Set the last speed as the initial value
+            v_ego_kph = self.sm['carState'].vEgo * 3.6
 
             time_delay = self.carrot_serv.autoNaviSpeedCtrlEnd
             time_wait = 0
@@ -353,6 +354,7 @@ class CarrotMan:
                 next_out_speed = out_speeds[i + 1]
 
                 if target_speed < next_out_speed:
+                  time_delay = max(0, ((v_ego_kph - target_speed) / accel_limit_kmh))
                   time_wait = - time_delay
 
                 # Calculate time interval for the current segment based on speed
