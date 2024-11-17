@@ -1005,14 +1005,14 @@
     {
       "group": "감속제어",
       "name": "MapTurnSpeedFactor",
-      "title": "경로턴속도반영비율(90%)",
+      "title": "경로턴속도반영비율(100%)",
       "descr": "작으면 속도가 줄어듬",
       "egroup": "SPEED",
       "etitle": "MapTurnSpeedFactor",
       "edescr": "",
       "min": 50,
       "max": 300,
-      "default": 90,
+      "default": 100,
       "unit": 10
     },
     {
