@@ -200,6 +200,7 @@ class VCruiseCarrot:
     self.log = ""
 
     self.autoCruiseControl = 0
+    self.autoCruiseControl_cancel_timer = 0
     self.AutoSpeedUptoRoadSpeedLimit = 0.0
 
     self.useLaneLineSpeed = self.params.get_int("UseLaneLineSpeed")
@@ -237,6 +238,11 @@ class VCruiseCarrot:
     self._add_log("")
     self.update_params()
     self.frame += 1
+    if CS.gearShifter != GearShifter.drive:
+      self.autoCruiseControl_cancel_timer = 20 * 100; # 20 sec
+    else:
+      self.autoCruiseControl_cancel_timer = max(0, self.autoCruiseControl_cancel_timer - 1)
+    
     CC = sm['carControl']
     if sm.alive['carrotMan']:
       carrot_man = sm['carrotMan']
@@ -529,6 +535,10 @@ class VCruiseCarrot:
       self._add_log(reason + " > Canceled")
     else:
       if self.autoCruiseControl == 0 and enable != 0:
+        enable = 0
+        return
+      if self.autoCruiseControl_cancel_timer > 0 and enable != 0:
+        self._add_log(reason + " > timer Canceled")
         enable = 0
         return
       self._activate_cruise = enable
