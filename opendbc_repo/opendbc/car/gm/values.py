@@ -245,6 +245,10 @@ class CAR(Platforms):
     [GMCarDocs("Chevrolet Traverse 2022-23", "RS, Premier, or High Country Trim")],
     CarSpecs(mass=1955, wheelbase=3.07, steerRatio=17.9, centerToFrontRatio=0.4),
   )
+  CHEVROLET_TRAX = GMPlatformConfig(
+    [GMCarDocs("Chevrolet TRAX 2024")],
+    CarSpecs(mass=1365, wheelbase=2.7, steerRatio=16.1, centerToFrontRatio=0.4),
+  )
 
 
 class CruiseButtons:
