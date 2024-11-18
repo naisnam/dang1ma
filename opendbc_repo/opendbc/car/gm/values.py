@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from enum import Enum, IntFlag
 
 from opendbc.car.common.numpy_fast import interp
-from opendbc.car import dbc_dict, PlatformConfig, DbcDict, Platforms, CarSpecs
+from opendbc.car import Bus, PlatformConfig, DbcDict, Platforms, CarSpecs
 from opendbc.car.structs import CarParams
 from opendbc.car.docs_definitions import CarHarness, CarDocs, CarParts
 from opendbc.car.fw_query_definitions import FwQueryConfig, Request, StdQueries
@@ -120,44 +120,43 @@ class GMSDGMPlatformConfig(GMPlatformConfig):
 
 
 class CAR(Platforms):
-  HOLDEN_ASTRA = GMPlatformConfig(
+  HOLDEN_ASTRA = GMASCMPlatformConfig(
     [GMCarDocs("Holden Astra 2017")],
     GMCarSpecs(mass=1363, wheelbase=2.662, steerRatio=15.7, centerToFrontRatio=0.4),
   )
-  CHEVROLET_VOLT = GMPlatformConfig(
+  CHEVROLET_VOLT = GMASCMPlatformConfig(
     [GMCarDocs("Chevrolet Volt 2017-18", min_enable_speed=0, video_link="https://youtu.be/QeMCN_4TFfQ")],
     GMCarSpecs(mass=1607, wheelbase=2.69, steerRatio=17.7, centerToFrontRatio=0.45, tireStiffnessFactor=0.469, minEnableSpeed=-1),
-    dbc_dict=dbc_dict('gm_global_a_powertrain_volt', 'gm_global_a_object', chassis_dbc='gm_global_a_chassis')
   )
-  CADILLAC_ATS = GMPlatformConfig(
+  CADILLAC_ATS = GMASCMPlatformConfig(
     [GMCarDocs("Cadillac ATS Premium Performance 2018")],
     GMCarSpecs(mass=1601, wheelbase=2.78, steerRatio=15.3),
   )
-  CHEVROLET_MALIBU = GMPlatformConfig(
+  CHEVROLET_MALIBU = GMASCMPlatformConfig(
     [GMCarDocs("Chevrolet Malibu Premier 2017")],
     GMCarSpecs(mass=1496, wheelbase=2.83, steerRatio=15.8, centerToFrontRatio=0.4),
   )
-  GMC_ACADIA = GMPlatformConfig(
+  GMC_ACADIA = GMASCMPlatformConfig(
     [GMCarDocs("GMC Acadia 2018", video_link="https://www.youtube.com/watch?v=0ZN6DdsBUZo")],
     GMCarSpecs(mass=1975, wheelbase=2.86, steerRatio=14.4, centerToFrontRatio=0.4),
   )
-  BUICK_LACROSSE = GMPlatformConfig(
+  BUICK_LACROSSE = GMASCMPlatformConfig(
     [GMCarDocs("Buick LaCrosse 2017-19", "Driver Confidence Package 2")],
     GMCarSpecs(mass=1712, wheelbase=2.91, steerRatio=15.8, centerToFrontRatio=0.4),
   )
-  BUICK_REGAL = GMPlatformConfig(
+  BUICK_REGAL = GMASCMPlatformConfig(
     [GMCarDocs("Buick Regal Essence 2018")],
     GMCarSpecs(mass=1714, wheelbase=2.83, steerRatio=14.4, centerToFrontRatio=0.4),
   )
-  CADILLAC_ESCALADE = GMPlatformConfig(
+  CADILLAC_ESCALADE = GMASCMPlatformConfig(
     [GMCarDocs("Cadillac Escalade 2017", "Driver Assist Package")],
     GMCarSpecs(mass=2564, wheelbase=2.95, steerRatio=17.3),
   )
-  CADILLAC_ESCALADE_ESV = GMPlatformConfig(
+  CADILLAC_ESCALADE_ESV = GMASCMPlatformConfig(
     [GMCarDocs("Cadillac Escalade ESV 2016", "Adaptive Cruise Control (ACC) & LKAS")],
     GMCarSpecs(mass=2739, wheelbase=3.302, steerRatio=17.3, tireStiffnessFactor=1.0),
   )
-  CADILLAC_ESCALADE_ESV_2019 = GMPlatformConfig(
+  CADILLAC_ESCALADE_ESV_2019 = GMASCMPlatformConfig(
     [GMCarDocs("Cadillac Escalade ESV 2019", "Adaptive Cruise Control (ACC) & LKAS")],
     CADILLAC_ESCALADE_ESV.specs,
   )
@@ -246,10 +245,11 @@ class CAR(Platforms):
     [GMCarDocs("Chevrolet Volt 2019", "Adaptive Cruise Control (ACC) & LKAS")],
     GMCarSpecs(mass=1607, wheelbase=2.69, steerRatio=15.7, centerToFrontRatio=0.45),
   )
-  CHEVROLET_TRAX = GMPlatformConfig(
-    [GMCarDocs("Chevrolet TRAX 2024")],
-    CarSpecs(mass=1365, wheelbase=2.7, steerRatio=16.1, centerToFrontRatio=0.4),
+  CHEVROLET_TRAVERSE = GMSDGMPlatformConfig(
+    [GMCarDocs("Chevrolet Traverse 2022-23", "RS, Premier, or High Country Trim")],
+    CarSpecs(mass=1955, wheelbase=3.07, steerRatio=17.9, centerToFrontRatio=0.4),
   )
+
 
 class CruiseButtons:
   INIT = 0
