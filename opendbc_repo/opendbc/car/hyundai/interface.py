@@ -26,11 +26,6 @@ class CarInterface(CarInterfaceBase):
     if camera_scc > 0:
       ret.flags |= HyundaiFlags.CAMERA_SCC.value
       print("$$$CAMERA_SCC toggled...")
-    if camera_scc > 1:
-      ret.extFlags |= HyundaiExtFlags.ACAN_PANDA.value
-      print("$$$sub PANDA enabled...")
-      
-
 
     ret.carName = "hyundai"
 
