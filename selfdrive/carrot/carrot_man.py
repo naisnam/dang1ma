@@ -1353,7 +1353,7 @@ class CarrotServ:
       speed_n_sources.append((abs(vturn_speed), "vturn"))
 
     if self.turnSpeedControlMode == 2:
-      if self.atcDist < 300:
+      if 0 < self.xDistToTurn < 300:
         speed_n_sources.append((route_speed * self.mapTurnSpeedFactor, "route"))
     elif self.turnSpeedControlMode == 3:
       speed_n_sources.append((route_speed * self.mapTurnSpeedFactor, "route"))
