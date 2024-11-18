@@ -338,10 +338,10 @@ class CarState(CarStateBase):
     #ret.leftBlinker, ret.rightBlinker = self.update_blinker_from_lamp(50, cp.vl["BLINKERS"][left_blinker_sig],
     #                                                                  cp.vl["BLINKERS"][right_blinker_sig])
     if self.CP.enableBsm:
-      cp_ = cp_cam if (self.CP.flags & HyundaiFlags.CAMERA_SCC and self.CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value) or self.CP.carFingerprint in [CAR.KIA_SORENTO_4TH_GEN, CAR.KIA_SORENTO_HEV_4TH_GEN] else cp
+      cp_ = cp_cam if (self.CP.flags & HyundaiFlags.CAMERA_SCC and self.CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value) else cp
       #ret.leftBlindspot = cp.vl["BLINDSPOTS_REAR_CORNERS"]["FL_INDICATOR"] != 0
       #ret.rightBlindspot = cp.vl["BLINDSPOTS_REAR_CORNERS"]["FR_INDICATOR"] != 0
-      if self.CP.carFingerprint in [CAR.KIA_CARNIVAL_4TH_GEN]:
+      if self.CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value:
         ret.leftBlindspot = cp_.vl["BLINDSPOTS_REAR_CORNERS"]["INDICATOR_LEFT_FOUR"] != 0
         ret.rightBlindspot = cp_.vl["BLINDSPOTS_REAR_CORNERS"]["INDICATOR_RIGHT_FOUR"] != 0
       else:
@@ -573,7 +573,7 @@ class CarState(CarStateBase):
     # 개조, 독립 EV6: 1, 1 => True, inADAS: 1, 0 => False
     # 비개조, 0, 0 => True
     if CP.enableBsm:
-      if (CP.flags & HyundaiFlags.CAMERA_SCC.value and CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value) or CP.carFingerprint in [CAR.KIA_SORENTO_4TH_GEN, CAR.KIA_SORENTO_HEV_4TH_GEN]:
+      if (CP.flags & HyundaiFlags.CAMERA_SCC.value and CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value):
         pass
       else:
         messages += [
@@ -620,7 +620,7 @@ class CarState(CarStateBase):
     # 개조, 독립 EV6: 1, 1 => False, inADAS: 1, 0 => True
     # 비개조, 0, 0 => False
     if CP.enableBsm:
-      if (CP.flags & HyundaiFlags.CAMERA_SCC.value and CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value) or CP.carFingerprint in [CAR.KIA_SORENTO_4TH_GEN, CAR.KIA_SORENTO_HEV_4TH_GEN]:
+      if (CP.flags & HyundaiFlags.CAMERA_SCC.value and CP.extFlags & HyundaiExtFlags.BSM_IN_ADAS.value):
         messages += [
           ("BLINDSPOTS_REAR_CORNERS", 20),
         ]
