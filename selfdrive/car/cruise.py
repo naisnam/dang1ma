@@ -516,13 +516,12 @@ class VCruiseCarrot:
     road_limit_kph = self.nRoadLimitSpeed * self.autoSpeedUptoRoadSpeedLimit
     if road_limit_kph < 1.0:
       return v_cruise_kph
-    if road_limit_kph < self.road_limit_kph and False:  # TODO: road_limit speed 자동 속도 다운.. 삭제..
-      if v_cruise_kph > road_limit_kph:
-        v_cruise_kph = road_limit_kph
-    elif self.v_lead_kph + 3 > v_cruise_kph and v_cruise_kph < road_limit_kph and self.d_rel < 60:
-      v_cruise_kph += 2
-    elif self.model_v_kph > v_cruise_kph and v_cruise_kph < road_limit_kph:
-      v_cruise_kph += 2
+    
+    desired_speed = min(self.desiredSpeed, road_limit_kph)
+    if self.v_lead_kph + 5 > v_cruise_kph and v_cruise_kph < desired_speed and self.d_rel < 60:
+      v_cruise_kph += 5
+    elif self.model_v_kph > v_cruise_kph and v_cruise_kph < desired_speed:
+      v_cruise_kph += 5
 
     self.road_limit_kph = road_limit_kph
     return v_cruise_kph
@@ -602,8 +601,11 @@ class VCruiseCarrot:
         self._cruise_control(-1, 5.0, "Cruise off (gas pressed while braking)")
       if self.v_ego_kph_set > v_cruise_kph:
         v_cruise_kph = self.v_ego_kph_set
-        self._pause_auto_speed_up = False
-
+        
+    if self._gas_pressed_count == 1:
+      self._pause_auto_speed_up = False
+    elif self._brake_pressed_count == 1:
+      self._pause_auto_speed_up = True
       
     return self._auto_speed_up(v_cruise_kph)
   
