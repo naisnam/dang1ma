@@ -1898,7 +1898,7 @@ public:
         }
     }
     void drawNaviPath(UIState* s) {
-#if 1
+#if 0
         if (nav_path_vertex_count > 0) {
 			nvgBeginPath(s->vg);
 			nvgMoveTo(s->vg, nav_path_vertex[0].x(), nav_path_vertex[0].y());
