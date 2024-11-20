@@ -112,6 +112,7 @@ def get_default_params():
     ("SteerActuatorDelay", "30"),       
     ("MaxTimeOffroadMin", "60"),
     ("DisableDM", "0"),
+    ("CruiseOnDist", "400"),
     ("HotspotOnBoot", "0"),
     ("CustomSR", "0"),
   ]
