@@ -536,10 +536,12 @@ class VCruiseCarrot:
     else:
       if self.autoCruiseControl == 0 and enable != 0:
         enable = 0
+        self._soft_hold_active = 0
         return
       if self.autoCruiseControl_cancel_timer > 0 and enable != 0:
         self._add_log(reason + " > timer Canceled")
         enable = 0
+        self._soft_hold_active = 0
         return
       self._activate_cruise = enable
       self._cancel_timer = int(cancel_timer / 0.01)   # DT_CTRL: 0.01
