@@ -1799,6 +1799,7 @@ public:
     int     xSpdLimit = 0;
     int     xSignType = -1;
     QPointF nav_path_vertex[150];
+    QPointF nav_path_vertex_xy[150];
     int     nav_path_vertex_count = 0;
 
     void updateState(UIState *s) {
@@ -1853,6 +1854,7 @@ public:
                     int idx = get_path_length_idx(lane_lines[2], d);
 
                     if (idx >= max_z) z_offset -= 0.05;
+                    nav_path_vertex_xy[nav_path_vertex_count] = QPointF(y, -x);
                     _model->mapToScreen((x<3.0) ? 5.0 : x, y, lane_lines[2].getZ()[idx] + z_offset, &nav_path_vertex[nav_path_vertex_count++]);
                     if(nav_path_vertex_count >= 150) break;
                 }
@@ -1912,7 +1914,7 @@ public:
 			nvgStrokeWidth(s->vg, 20.0f);
 			nvgStroke(s->vg);
 		}
-#else
+#elif 0
         if (nav_path_vertex_count > 1) {
             for(int i = 1; i < nav_path_vertex_count; i++) {
                 float x = nav_path_vertex[i].x();
@@ -1923,6 +1925,27 @@ public:
                 nvgFillColor(s->vg, COLOR_GREEN);
                 nvgFill(s->vg);
 			}
+        }
+#else
+        if (nav_path_vertex_count) {
+            nvgBeginPath(s->vg);
+            int bx = s->fb_w - 400;
+            int by = s->fb_h - 400;
+            float scale = 1.0;
+            nvgSave(s->vg);
+            nvgScissor(s->vg, bx - 350, by - 250, 700, 300);
+            nvgMoveTo(s->vg, bx + nav_path_vertex_xy[0].x() * scale, by + nav_path_vertex_xy[0].y() * scale);
+            for (int i = 1; i < nav_path_vertex_count; i++) {
+                float x = nav_path_vertex_xy[i].x();
+                float y = nav_path_vertex_xy[i].y();
+                if (isnan(x) || isnan(y)) continue;
+                nvgLineTo(s->vg, bx + x * scale, by + y * scale);
+            }
+            nvgStrokeColor(s->vg, COLOR_GREEN);
+            nvgStrokeWidth(s->vg, 10.0f);
+            nvgStroke(s->vg);
+
+            nvgRestore(s->vg);
         }
 #endif
     }
