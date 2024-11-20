@@ -422,9 +422,12 @@ class VCruiseCarrot:
 
     v_cruise_kph, button_type, long_pressed = self._carrot_command(v_cruise_kph, button_type, long_pressed)
 
+    if button_type != ButtonType.cancel and button_type != 0:
+      self.autoCruiseControl_cancel_timer = 0
+      self._cruise_cancel_state = False
+
     if not long_pressed:
       if button_type == ButtonType.accelCruise:
-        self._cruise_cancel_state = False
         self._lat_enabled = True
         self._pause_auto_speed_up = False
         if self._soft_hold_active > 0:
@@ -438,7 +441,6 @@ class VCruiseCarrot:
           v_cruise_kph = self._v_cruise_desired(CS, v_cruise_kph)
 
       elif button_type == ButtonType.decelCruise:
-        self._cruise_cancel_state = False
         self._lat_enabled = True
         self._pause_auto_speed_up = True
         if self._soft_hold_active > 0:
@@ -475,12 +477,10 @@ class VCruiseCarrot:
     else:
       if button_type == ButtonType.accelCruise:
         v_cruise_kph = button_kph
-        self._cruise_cancel_state = False
         self._v_cruise_kph_at_brake = 0
       elif button_type == ButtonType.decelCruise:
         self._pause_auto_speed_up = True
         v_cruise_kph = button_kph
-        self._cruise_cancel_state = False
         self._v_cruise_kph_at_brake = 0
       elif button_type == ButtonType.gapAdjustCruise:
         self.params.put_int_nonblocking("MyDrivingMode", self.params.get_int("MyDrivingMode") % 4 + 1) # 1,2,3,4 (1:eco, 2:safe, 3:normal, 4:high speed)
