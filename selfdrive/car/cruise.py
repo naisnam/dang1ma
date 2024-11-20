@@ -543,6 +543,19 @@ class VCruiseCarrot:
       self._activate_cruise = enable
       self._cancel_timer = int(cancel_timer / 0.01)   # DT_CTRL: 0.01
       self._add_log(reason)
+
+  def _check_safe_stop(self, CS, safe_distance = 3):
+    v_ego = CS.vEgo
+    decel_rate = 1.5
+    d_stop_ego = (v_ego ** 2) / (2 * decel_rate)
+    d_stop_rel = (self.v_rel ** 2) / (2 * decel_rate)
+
+    d_final = self.d_rel - d_stop_ego - d_stop_rel
+
+    if d_final >= safe_distance:
+      return True, d_final
+    else:
+      return False, d_final
     
   def _update_cruise_state(self, CS, CC, v_cruise_kph):
     if not CC.enabled:
@@ -586,15 +599,17 @@ class VCruiseCarrot:
         self._cruise_control(1, -1 if self.v_ego_kph_set < 1 else 0, "Cruise on (lead car)")
 
     elif not CC.enabled and self._brake_pressed_count < 0 and self._gas_pressed_count < 0:
-      if self.v_rel < -0.2 and 0 < self.d_rel < CS.vEgo ** 2 / (1.5 * 2):
-        self._cruise_control(1, -1, "Cruise on (fcw)")
-      elif CS.vEgo > 0.02 and 0 < self.d_rel < 4:
-        self._cruise_control(1, -1, "Cruise on (fcw dist)")
-        #self.events.append(EventName.stopStop)
-      elif self.desiredSpeed < self.v_ego_kph_set:
+      if self.d_rel > 0 and CS.vEgo > 0.02:
+        safe_state, safe_dist = self._check_safe_stop(CS, 4)        
+        if not safe_state:
+          self._cruise_control(1, -1, "Cruise on (fcw)")
+        elif self.d_rel < 4:
+          self._cruise_control(1, -1, "Cruise on (fcw dist)")
+        else:
+          self._add_log("leadCar d={:.1f},v={:.1f},{:.1f}, {:.1f}".format(self.d_rel, self.v_rel, CS.vEgo, safe_dist))
+          #self.events.append(EventName.stopStop)
+      if self.desiredSpeed < self.v_ego_kph_set:
         self._cruise_control(1, -1, "Cruise on (desired speed)")
-      else:
-        self._add_log("leadCar d={:.1f},v={:.1f},{:.1f}, {:.1f}".format(self.d_rel, self.v_rel, CS.vEgo*3.6,  CS.vEgo ** 2 / (1.5 * 2)))
 
     if self._gas_pressed_count > self._gas_tok_timer:
       if CS.aEgo < -0.5:
@@ -602,7 +617,7 @@ class VCruiseCarrot:
       if self.v_ego_kph_set > v_cruise_kph:
         v_cruise_kph = self.v_ego_kph_set
         
-    if self._gas_pressed_count == 1:
+    if self._gas_pressed_count == 1 or CS.vEgo < 0.1:
       self._pause_auto_speed_up = False
     elif self._brake_pressed_count == 1:
       self._pause_auto_speed_up = True
