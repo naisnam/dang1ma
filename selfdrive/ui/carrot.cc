@@ -1914,7 +1914,7 @@ public:
 			nvgStrokeWidth(s->vg, 20.0f);
 			nvgStroke(s->vg);
 		}
-#elif 0
+#elif 1
         if (nav_path_vertex_count > 1) {
             for(int i = 1; i < nav_path_vertex_count; i++) {
                 float x = nav_path_vertex[i].x();
