@@ -233,6 +233,7 @@ class VCruiseCarrot:
       self.speed_from_pcm = self.params.get_int("SpeedFromPCM")
       self._cruise_speed_unit = self.params.get_int("CruiseSpeedUnit")
       self._cruise_button_mode = self.params.get_int("CruiseButtonMode")
+      self.cruiseOnDist = self.params.get_float("CruiseOnDist") * 0.01
       
   def update_v_cruise(self, CS, sm, is_metric):
     self._add_log("")
@@ -603,7 +604,7 @@ class VCruiseCarrot:
         safe_state, safe_dist = self._check_safe_stop(CS, 4)        
         if not safe_state:
           self._cruise_control(1, -1, "Cruise on (fcw)")
-        elif self.d_rel < 4:
+        elif self.d_rel < self.cruiseOnDist:
           self._cruise_control(1, -1, "Cruise on (fcw dist)")
         else:
           self._add_log("leadCar d={:.1f},v={:.1f},{:.1f}, {:.1f}".format(self.d_rel, self.v_rel, CS.vEgo, safe_dist))
