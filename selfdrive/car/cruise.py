@@ -423,8 +423,12 @@ class VCruiseCarrot:
     v_cruise_kph, button_type, long_pressed = self._carrot_command(v_cruise_kph, button_type, long_pressed)
 
     if button_type != ButtonType.cancel and button_type != 0:
-      self.autoCruiseControl_cancel_timer = 0
-      self._cruise_cancel_state = False
+      if self.autoCruiseControl_cancel_timer > 0:
+        self._add_log("AutoCruiseControl cancel timer RESET")
+        self.autoCruiseControl_cancel_timer = 0
+      if self._cruise_cancel_state:
+        self._add_log("Cruise Cancel state RESET")
+        self._cruise_cancel_state = False
 
     if not long_pressed:
       if button_type == ButtonType.accelCruise:
