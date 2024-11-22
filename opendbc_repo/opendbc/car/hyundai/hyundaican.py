@@ -112,13 +112,13 @@ def create_clu11(packer, frame, clu11, button, CP):
   return packer.make_can_msg("CLU11", bus, values)
 
 
-def create_lfahda_mfc(packer, CC, blinking_signal):
+def create_lfahda_mfc(packer, CC, blinking_signal, set_speed_in_units):
   activeCarrot = CC.hudControl.activeCarrot
   values = {
     "LFA_Icon_State": 2 if CC.latActive else 1 if CC.enabled else 0,
     "HDA_Active": 1 if activeCarrot >= 2 else 0,
     "HDA_Icon_State": 2 if activeCarrot == 3 and blinking_signal else 2 if activeCarrot >= 2 else 0,
-    "HDA_VSetReq": 1 if activeCarrot >= 2 else 0,
+    "HDA_VSetReq": set_speed_in_units if activeCarrot >= 2 else 0,
     "HDA_USM" : 2,
     "HDA_Icon_Wheel" : 1 if CC.latActive else 0,
     "HDA_Chime" : 1 if CC.latActive else 0,
