@@ -45,7 +45,7 @@ def get_default_params():
     ("ShowPathColorLane", "13"),
     ("ShowPlotMode", "0"),
     ("AutoCruiseControl", "0"),    
-    ("AutoGasTokEnableSpeed", "0"),    
+    ("AutoGasTokSpeed", "0"),    
     ("AutoEngage", "0"),    
     ("SoftHoldMode", "0"),       
 
