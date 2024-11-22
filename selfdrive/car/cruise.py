@@ -225,6 +225,7 @@ class VCruiseCarrot:
   def update_params(self):
     if self.frame % 10 == 0:
       self.autoCruiseControl = self.params.get_int("AutoCruiseControl")
+      self.autoGasTokSpeed = self.params.get_int("AutoGasTokSpeed")
       self.autoSpeedUptoRoadSpeedLimit = self.params.get_float("AutoSpeedUptoRoadSpeedLimit") * 0.01
       useLaneLineSpeed = self.params.get_int("UseLaneLineSpeed")
       if self.useLaneLineSpeed != useLaneLineSpeed:
@@ -575,7 +576,7 @@ class VCruiseCarrot:
       #self._cruise_cancel_state = False
       pass
 
-    if self._gas_tok:
+    if self._gas_tok and self.v_ego_kph_set >= self.autoGasTokSpeed:
       if not CC.enabled:
         #self._cruise_cancel_state = False
         self._cruise_control(1, -1, "Cruise on (gas tok)")

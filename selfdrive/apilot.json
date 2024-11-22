@@ -432,6 +432,19 @@
     },
     {
       "group": "시작",
+      "name": "AutoGasTokSpeed",
+      "title": "오토크루즈: 엑셀톡 속도",
+      "descr": "해당속도 이상에서만 작동함.",
+      "egroup": "START",
+      "etitle": "Auto Cruise: Gas Tok speed",
+      "edescr": "",
+      "min": 0,
+      "max": 200,
+      "default": 0,
+      "unit": 5
+    },
+    {
+      "group": "시작",
       "name": "AutoEngage",
       "title": "오토인게이지",
       "descr": "1:SteerEnable, 2:Steer,Cruise Enable",
